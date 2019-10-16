@@ -1,0 +1,28 @@
+
+
+try
+{
+  CheckForIllegalCrossThreadCalls = false;
+
+  //Using UDP sockets, datagram
+  serverSocket = new Socket(AddressFamily.InterNetwork,
+  SocketType.Dgram, ProtocolType.Udp);
+
+  //Assign any IP of the machine and listen on port number - port is param provided to the code 
+  IPEndPoint ipEndPoint = new IPEndPoint(IPAddress.Any, port);
+
+  //Bind the address
+  serverSocket.Bind(ipEndPoint);
+
+  IPEndPoint ipeSender = new IPEndPoint(IPAddress.Any, 0);//listen on any IP on that machine
+  //define epSender Endpoint to identify the incoming clients
+  EndPoint epSender = (EndPoint)ipeSender;
+
+  //and at the end - start listening for incoming data on the specified socket
+  serverSocket.BeginReceiveFrom(byteData, 0, byteData.Length,
+  SocketFlags.None, ref epSender, new AsyncCallback(OnReceive), epSender);
+}
+catch (Exception ex)
+{
+  //do something in case of an exception
+}
